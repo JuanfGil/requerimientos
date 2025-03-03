@@ -60,15 +60,15 @@ app.get("/requerimientos", async (req, res) => {
 // Crear un nuevo requerimiento
 app.post("/requerimientos", async (req, res) => {
     try {
-        const { cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones, fecha } = req.body;
+        const { cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones } = req.body;
 
         if (!cliente || !requerimiento || !prioridad || !responsable || !estado) {
             return res.status(400).json({ error: "Faltan datos obligatorios" });
         }
 
         const result = await pool.query(
-            "INSERT INTO requerimientos (cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones, fecha) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
-            [cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones, fecha]
+            "INSERT INTO requerimientos (cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+            [cliente, requerimiento, prioridad, responsable, estado, linea, categoria, observaciones]
         );
 
         res.status(201).json(result.rows[0]);
