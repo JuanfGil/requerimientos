@@ -169,7 +169,7 @@
                     <td>${req.requerimiento}</td>
                     <td><span class="badge bg-${req.prioridad === 'Alta' ? 'danger' : req.prioridad === 'Media' ? 'warning' : 'secondary'}">${req.prioridad}</span></td>
                     <td>${req.responsable}</td>
-                    <td><span class="badge bg-${getColorEstado(req.estado)}">${req.estado}</span></td>
+                    <td><span class="badge bg-${getEstadoColor(req.estado)}">${req.estado}</span></td>
                     <td>${req.linea || "-"}</td>
                     <td>${req.categoria || "-"}</td>
                     <td>${req.observaciones || "-"}</td>
