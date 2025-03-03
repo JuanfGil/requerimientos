@@ -177,7 +177,7 @@
                     <td>${req.linea || "-"}</td>
                     <td>${req.categoria || "-"}</td>
                     <td>${req.observaciones || "-"}</td>
-                    <td>${req.fecha_creacion ? new Date(req.fecha_creacion).toLocaleString("es-ES", { hour12: false })}</td>
+                   <td>${req.fecha_creacion ? new Date(req.fecha_creacion).toLocaleDateString() : "-"}</td>
                     <td>${req.avance || "-"}</td>
                     <td>
                         <button class="btn btn-info btn-sm" onclick="actualizarAvance(${req.id})">
