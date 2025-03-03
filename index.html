@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Requerimientos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Requerimientos</h1>
+
+    <form id="formRequerimiento">
+        <input type="text" id="cliente" placeholder="Cliente" required>
+        <input type="text" id="requerimiento" placeholder="Requerimiento" required>
+        <select id="prioridad">
+            <option value="Alta">Alta</option>
+            <option value="Media">Media</option>
+            <option value="Baja">Baja</option>
+        </select>
+        <input type="text" id="responsable" placeholder="Responsable" required>
+        <select id="estado">
+            <option value="No iniciado">No iniciado</option>
+            <option value="En ejecución">En ejecución</option>
+            <option value="Ejecutado">Ejecutado</option>
+            <option value="Standby">Standby</option>
+            <option value="Cumplido">Cumplido</option>
+        </select>
+        <input type="text" id="linea" placeholder="Línea">
+        <input type="text" id="categoria" placeholder="Categoría">
+        <input type="text" id="observaciones" placeholder="Observaciones">
+        <button type="submit">Agregar Requerimiento</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Requerimiento</th>
+                <th>Prioridad</th>
+                <th>Responsable</th>
+                <th>Estado</th>
+                <th>Línea</th>
+                <th>Categoría</th>
+                <th>Observaciones</th>
+                <th>Avance</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaRequerimientos"></tbody>
+    </table>
+
+    <button id="descargarExcel">Descargar Excel</button>
+
+    <script>
+        const API_URL = "http://localhost:3000/requerimientos";
+
+        // Función para obtener y mostrar los requerimientos
+        const cargarRequerimientos = async () => {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            
+            const tabla = document.getElementById("tablaRequerimientos");
+            tabla.innerHTML = ""; // Limpiar la tabla antes de agregar datos
+
+            data.forEach(req => {
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                    <td>${req.cliente}</td>
+                    <td>${req.requerimiento}</td>
+                    <td style="color: ${req.prioridad === 'Alta' ? 'red' : req.prioridad === 'Media' ? 'orange' : 'gray'}">
+                        ${req.prioridad}
+                    </td>
+                    <td>${req.responsable}</td>
+                    <td>${req.estado}</td>
+                    <td>${req.linea || "-"}</td>
+                    <td>${req.categoria || "-"}</td>
+                    <td>${req.observaciones || "-"}</td>
+                    <td>${req.avance || "-"}</td>
+                    <td>
+                        <button onclick="actualizarAvance(${req.id})">Avance</button>
+                        <button onclick="eliminarRequerimiento(${req.id})">Eliminar</button>
+                    </td>
+                `;
+                tabla.appendChild(fila);
+            });
+        };
+
+        // Función para agregar un requerimiento
+        document.getElementById("formRequerimiento").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const nuevoRequerimiento = {
+                cliente: document.getElementById("cliente").value,
+                requerimiento: document.getElementById("requerimiento").value,
+                prioridad: document.getElementById("prioridad").value,
+                responsable: document.getElementById("responsable").value,
+                estado: document.getElementById("estado").value,
+                linea: document.getElementById("linea").value,
+                categoria: document.getElementById("categoria").value,
+                observaciones: document.getElementById("observaciones").value
+            };
+
+            await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(nuevoRequerimiento)
+            });
+
+            e.target.reset(); // Limpiar formulario
+            cargarRequerimientos(); // Recargar la tabla
+        });
+
+        // Función para actualizar avance
+        const actualizarAvance = async (id) => {
+            const avance = prompt("Ingrese el avance:");
+            if (avance) {
+                await fetch(`${API_URL}/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ avance, estado: "En ejecución" })
+                });
+                cargarRequerimientos();
+            }
+        };
+
+        // Función para eliminar un requerimiento
+        const eliminarRequerimiento = async (id) => {
+            await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+            cargarRequerimientos();
+        };
+
+        // Cargar los requerimientos al iniciar la página
+        cargarRequerimientos();
+    </script>
+</body>
+</html>
