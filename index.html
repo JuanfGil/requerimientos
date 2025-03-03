@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Requerimientos</title>
+    <title>Gestión de Pendintes Carrolina Gil</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Íconos de Bootstrap -->
@@ -64,7 +64,7 @@
 <body>
 
     <div class="container mt-4">
-        <h1 class="text-center text-primary mb-4"><i class="bi bi-clipboard-check"></i> Gestión de Requerimientos</h1>
+        <h1 class="text-center text-primary mb-4"><i class="bi bi-clipboard-check"></i> Gestión de Pendintes Carrolina Gil</h1>
 
         
         <!-- Formulario -->
@@ -135,6 +135,7 @@
                         <th>Categoría</th>
                         <th>Observaciones</th>
                         <th>Avance</th>
+                        <th>Fecha Creación</th>
                         <th>Acciones</th>
                         </tr>
                     </thead>
@@ -176,6 +177,7 @@
                     <td>${req.linea || "-"}</td>
                     <td>${req.categoria || "-"}</td>
                     <td>${req.observaciones || "-"}</td>
+                    <td>${fechaFormateada}</td>
                     <td>${req.avance || "-"}</td>
                     <td>
                         <button class="btn btn-info btn-sm" onclick="actualizarAvance(${req.id})">
@@ -263,21 +265,46 @@
             cargarRequerimientos();
         };
 
-        // Función para descargar la tabla como Excel
-        const descargarExcel = () => {
-        const tabla = document.getElementById("tablaRequerimientos");
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.table_to_sheet(tabla);
+<script>
+    const descargarExcel = () => {
+        const wb = XLSX.utils.book_new(); // Crear un nuevo libro de Excel
 
-        // Agregar la hoja de datos al libro de Excel
+        // Obtener datos de la tabla
+        const tabla = document.getElementById("tablaRequerimientos");
+        const filas = Array.from(tabla.getElementsByTagName("tr"));
+
+        // Crear un array para almacenar los datos del Excel
+        const datosExcel = [];
+
+        // Definir los encabezados manualmente en la primera fila
+        const encabezados = ["Cliente", "Requerimiento", "Prioridad", "Responsable", "Estado", "Línea", "Categoría", "Observaciones", "Fecha Creación"];
+        datosExcel.push(encabezados); // Agregar encabezados a la primera fila
+
+        // Recorrer las filas de la tabla y extraer los datos
+        filas.slice(1).forEach(fila => { // Omitir la fila de encabezados HTML
+            const celdas = fila.getElementsByTagName("td");
+            if (celdas.length > 0) { // Evitar filas vacías
+                const filaDatos = [];
+                for (let i = 0; i < celdas.length - 1; i++) { // Evitar la última columna (botones)
+                    filaDatos.push(celdas[i].innerText);
+                }
+                datosExcel.push(filaDatos); // Agregar fila al array de datos
+            }
+        });
+
+        // Convertir los datos en una hoja de Excel
+        const ws = XLSX.utils.aoa_to_sheet(datosExcel);
         XLSX.utils.book_append_sheet(wb, ws, "Gestion Pendientes");
 
-        // Generar y descargar el archivo
+        // Descargar el archivo
         XLSX.writeFile(wb, "Gestion Pendientes Caro Gil.xlsx");
     };
 
-    // Evento para descargar Excel
     document.getElementById("descargarExcel").addEventListener("click", descargarExcel);
+</script>
+        
+
+
 
         // Cargar la tabla al iniciar
         cargarRequerimientos();
