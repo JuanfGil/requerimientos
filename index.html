@@ -54,11 +54,40 @@
         .badge-prioridad-baja { background-color: #bdbdbd; }
 
         /* Colores pastel para estados */
-        .badge-estado-no-iniciado { background-color: #d6d6d6; color: #333; }  /* Gris */
-        .badge-estado-en-ejecucion { background-color: #f5b7c2; color: #333; } /* Rosado */
-        .badge-estado-ejecutado { background-color: #a8e6a1; color: #333; }     /* Verde */
-        .badge-estado-standby { background-color: #f8c471; color: #333; }       /* Naranja */
-        .badge-estado-cumplido { background-color: #a6c8ff; color: #333; }      /* Azul */
+        .badge-estado-no-iniciado {
+            background-color: #D3D3D3; /* Gris pastel */
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+}
+
+        .badge-estado-en-ejecucion {
+            background-color: #F4A8C4; /* Rosado pastel */
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+}
+
+        .badge-estado-ejecutado {
+            background-color: #A8E6A2; /* Verde pastel */
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+}
+
+        .badge-estado-standby {
+            background-color: #FFC48C; /* Naranja pastel */
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+}
+
+        .badge-estado-cumplido {
+            background-color: #A8C8F4; /* Azul pastel */
+            color: black;
+            padding: 5px 10px;
+            border-radius: 5px;
+}
     </style>
 </head>
 <body>
@@ -173,7 +202,7 @@
                     <td>${req.requerimiento}</td>
                     <td><span class="badge bg-${req.prioridad === 'Alta' ? 'danger' : req.prioridad === 'Media' ? 'warning' : 'secondary'}">${req.prioridad}</span></td>
                     <td>${req.responsable}</td>
-                    <td><span class="badge bg-${getEstadoColor(req.estado)}">${req.estado}</span></td>
+                   <td><span class="${getEstadoColor(req.estado)}">${req.estado}</span></td>
                     <td>${req.linea || "-"}</td>
                     <td>${req.categoria || "-"}</td>
                     <td>${req.observaciones || "-"}</td>
