@@ -188,6 +188,7 @@
         };
 
         <script>
+            
     // Función para abrir el modal de avance con datos del requerimiento
     const actualizarAvance = (id) => {
         document.getElementById("avanceId").value = id; // Guardar ID del requerimiento
@@ -254,18 +255,6 @@
             cargarRequerimientos();
         });
 
-        // Actualizar Avance
-        /*const actualizarAvance = async (id) => {
-            const avance = prompt("Ingrese el avance:");
-            if (avance) {
-                await fetch(`${API_URL}/${id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ avance, estado: "En ejecución" })
-                });
-                cargarRequerimientos();
-            }
-        };*/
 
         // Eliminar Requerimiento
         const eliminarRequerimiento = async (id) => {
