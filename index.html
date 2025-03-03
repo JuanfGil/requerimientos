@@ -53,31 +53,56 @@
         .badge-prioridad-media { background-color: #ffd93d; color: #333; }
         .badge-prioridad-baja { background-color: #bdbdbd; }
 
-        /* Colores pastel para estados */
-        .badge-estado-no-iniciado {
-            background-color: #D3D3D3; /* Gris pastel */
-            color: white;
-            
+        /* Estilos para los estados */
+.badge-estado {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 12px;
+    border-radius: 20px; /* Hace el diseño más redondeado */
+    text-align: center;
+    min-width: 90px; /* Asegura un tamaño uniforme */
 }
 
-        .badge-estado-en-ejecucion {
-            background-color: #F4A8C4; /* Rosado pastel */
-            color: white;
+/* Colores pastel para cada estado */
+.badge-estado-no-iniciado {
+    background-color: #D3D3D3; /* Gris pastel */
+    color: black;
 }
 
-        .badge-estado-ejecutado {
-            background-color: #A8E6A2; /* Verde pastel */
-            color: white;
+.badge-estado-en-ejecucion {
+    background-color: #F4A8C4; /* Rosado pastel */
+    color: black;
 }
 
-        .badge-estado-standby {
-            background-color: #FFC48C; /* Naranja pastel */
-            color: white;
+.badge-estado-ejecutado {
+    background-color: #A8E6A2; /* Verde pastel */
+    color: black;
 }
 
-        .badge-estado-cumplido {
-            background-color: #A8C8F4; /* Azul pastel */
-            color: white;
+.badge-estado-standby {
+    background-color: #FFC48C; /* Naranja pastel */
+    color: black;
+}
+
+.badge-estado-cumplido {
+    background-color: #A8C8F4; /* Azul pastel */
+    color: black;
+}
+
+/* Líneas de separación en la tabla */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th, .table td {
+    border-bottom: 1px solid #ccc; /* Línea gris clara entre filas */
+    padding: 10px;
+}
+
+.table th {
+    background-color: #f8f9fa; /* Fondo claro para los encabezados */
 }
     </style>
 </head>
@@ -244,14 +269,14 @@
         // Obtener color del estado
         const getEstadoColor = (estado) => {
         switch (estado) {
-            case "No iniciado": return "badge-estado-no-iniciado";
-            case "En ejecución": return "badge-estado-en-ejecucion";
-            case "Ejecutado": return "badge-estado-ejecutado";
-            case "Standby": return "badge-estado-standby";
-            case "Cumplido": return "badge-estado-cumplido";
-            default: return "badge-estado-no-iniciado";
-        }
-    };
+        case "No iniciado": return "badge-estado badge-estado-no-iniciado";
+        case "En ejecución": return "badge-estado badge-estado-en-ejecucion";
+        case "Ejecutado": return "badge-estado badge-estado-ejecutado";
+        case "Standby": return "badge-estado badge-estado-standby";
+        case "Cumplido": return "badge-estado badge-estado-cumplido";
+        default: return "badge-estado badge-estado-no-iniciado";
+    }
+};
 
         // Agregar Requerimiento
         document.getElementById("formRequerimiento").addEventListener("submit", async (e) => {
