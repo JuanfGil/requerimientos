@@ -217,16 +217,16 @@
     };
         
         // Obtener color del estado
-        const getColorEstado = (estado) => {
-            switch (estado) {
-                case "No iniciado": return "secondary";
-                case "En ejecución": return "primary";
-                case "Ejecutado": return "success";
-                case "Standby": return "info";
-                case "Cumplido": return "dark";
-                default: return "secondary";
-            }
-        };
+        const getEstadoColor = (estado) => {
+        switch (estado) {
+            case "No iniciado": return "badge-estado-no-iniciado";
+            case "En ejecución": return "badge-estado-en-ejecucion";
+            case "Ejecutado": return "badge-estado-ejecutado";
+            case "Standby": return "badge-estado-standby";
+            case "Cumplido": return "badge-estado-cumplido";
+            default: return "badge-estado-no-iniciado";
+        }
+    };
 
         // Agregar Requerimiento
         document.getElementById("formRequerimiento").addEventListener("submit", async (e) => {
