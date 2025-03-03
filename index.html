@@ -9,6 +9,7 @@
     <!-- Íconos de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
+        /* Estilos generales */
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #f8f9fa, #e9ecef);
@@ -16,7 +17,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 800px;
         }
 
         .card {
@@ -42,70 +43,80 @@
             overflow-x: auto;
         }
 
+        /* Badges (Etiquetas) */
         .badge {
             font-size: 14px;
-            padding: 5px 10px;
-            border-radius: 8px;
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
         }
 
         /* Colores pastel para prioridades */
-        .badge-prioridad-alta { background-color: #ff6b6b; }
-        .badge-prioridad-media { background-color: #ffd93d; color: #333; }
-        .badge-prioridad-baja { background-color: #bdbdbd; }
+        .badge-prioridad-alta { background-color: #ff6b6b; color: white; }
+        .badge-prioridad-media { background-color: #ffd93d; color: black; }
+        .badge-prioridad-baja { background-color: #bdbdbd; color: black; }
 
-        /* Estilos para los estados */
-.badge-estado {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 6px 12px;
-    border-radius: 20px; /* Hace el diseño más redondeado */
-    text-align: center;
-    min-width: 90px; /* Asegura un tamaño uniforme */
-}
+        /* Estados con el mismo estilo que las prioridades */
+        .badge-estado {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+            min-width: 100px;
+            text-align: center;
+        }
 
-/* Colores pastel para cada estado */
-.badge-estado-no-iniciado {
-    background-color: #D3D3D3; /* Gris pastel */
-    color: black;
-}
+        /* Colores pastel para estados */
+        .badge-estado-no-iniciado {
+            background-color: #D3D3D3; /* Gris pastel */
+            color: black;
+        }
 
-.badge-estado-en-ejecucion {
-    background-color: #F4A8C4; /* Rosado pastel */
-    color: black;
-}
+        .badge-estado-en-ejecucion {
+            background-color: #F4A8C4; /* Rosado pastel */
+            color: black;
+        }
 
-.badge-estado-ejecutado {
-    background-color: #A8E6A2; /* Verde pastel */
-    color: black;
-}
+        .badge-estado-ejecutado {
+            background-color: #A8E6A2; /* Verde pastel */
+            color: black;
+        }
 
-.badge-estado-standby {
-    background-color: #FFC48C; /* Naranja pastel */
-    color: black;
-}
+        .badge-estado-standby {
+            background-color: #FFC48C; /* Naranja pastel */
+            color: black;
+        }
 
-.badge-estado-cumplido {
-    background-color: #A8C8F4; /* Azul pastel */
-    color: black;
-}
+        .badge-estado-cumplido {
+            background-color: #A8C8F4; /* Azul pastel */
+            color: black;
+        }
 
-/* Líneas de separación en la tabla */
-.table {
-    border-collapse: collapse;
-    width: 100%;
-}
+        /* Mejora de la tabla: líneas de separación claras */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
 
-.table th, .table td {
-    border-bottom: 1px solid #ccc; /* Línea gris clara entre filas */
-    padding: 10px;
-}
+        .table th, .table td {
+            border: 1px solid #ccc !important; /* Asegura que las líneas sean visibles */
+            padding: 12px;
+            text-align: left;
+        }
 
-.table th {
-    background-color: #f8f9fa; /* Fondo claro para los encabezados */
-}
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="container mt-4">
