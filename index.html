@@ -66,40 +66,7 @@
     <div class="container mt-4">
         <h1 class="text-center text-primary mb-4"><i class="bi bi-clipboard-check"></i> Gestión de Requerimientos</h1>
 
-        <!-- Modal para actualizar avance -->
-<div class="modal fade" id="modalAvance" tabindex="-1" aria-labelledby="modalAvanceLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalAvanceLabel">Actualizar Avance</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <input type="hidden" id="avanceId">
-                <div class="mb-3">
-                    <label for="nuevoAvance" class="form-label">Descripción del Avance</label>
-                    <textarea class="form-control" id="nuevoAvance" rows="2" placeholder="Describe el progreso..."></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="nuevoEstado" class="form-label">Nuevo Estado</label>
-                    <select class="form-select" id="nuevoEstado">
-                        <option value="No iniciado">No iniciado</option>
-                        <option value="En ejecución">En ejecución</option>
-                        <option value="Ejecutado">Ejecutado</option>
-                        <option value="Standby">Standby</option>
-                        <option value="Cumplido">Cumplido</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="guardarAvance()">Guardar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+        
         <!-- Formulario -->
         <div class="card p-4 shadow">
             <h4 class="text-secondary"><i class="bi bi-plus-circle"></i> Agregar Requerimiento</h4>
@@ -220,6 +187,36 @@
             });
         };
 
+        <script>
+    // Función para abrir el modal de avance con datos del requerimiento
+    const actualizarAvance = (id) => {
+        document.getElementById("avanceId").value = id; // Guardar ID del requerimiento
+        document.getElementById("nuevoAvance").value = ""; // Limpiar campo
+        document.getElementById("nuevoEstado").value = "No iniciado"; // Restablecer selección
+        new bootstrap.Modal(document.getElementById("modalAvance")).show();
+    };
+
+    // Función para guardar el avance y actualizar el estado
+    const guardarAvance = async () => {
+        const id = document.getElementById("avanceId").value;
+        const avance = document.getElementById("nuevoAvance").value;
+        const estado = document.getElementById("nuevoEstado").value;
+
+        if (!avance.trim()) {
+            alert("Por favor, ingresa una descripción del avance.");
+            return;
+        }
+
+        await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avance, estado })
+        });
+
+        document.getElementById("modalAvance").querySelector(".btn-close").click(); // Cerrar modal
+        cargarRequerimientos(); // Recargar la tabla
+    };
+        
         // Obtener color del estado
         const getColorEstado = (estado) => {
             switch (estado) {
@@ -258,7 +255,7 @@
         });
 
         // Actualizar Avance
-        const actualizarAvance = async (id) => {
+        /*const actualizarAvance = async (id) => {
             const avance = prompt("Ingrese el avance:");
             if (avance) {
                 await fetch(`${API_URL}/${id}`, {
@@ -268,7 +265,7 @@
                 });
                 cargarRequerimientos();
             }
-        };
+        };*/
 
         // Eliminar Requerimiento
         const eliminarRequerimiento = async (id) => {
@@ -278,35 +275,40 @@
 
         // Cargar la tabla al iniciar
         cargarRequerimientos();
-
-        // Función para abrir el modal de avance con datos del requerimiento
-    const actualizarAvance = (id) => {
-        document.getElementById("avanceId").value = id; // Guardar ID del requerimiento
-        document.getElementById("nuevoAvance").value = ""; // Limpiar campo
-        document.getElementById("nuevoEstado").value = "No iniciado"; // Restablecer selección
-        new bootstrap.Modal(document.getElementById("modalAvance")).show();
-    };
-
-    // Función para guardar el avance y actualizar el estado
-    const guardarAvance = async () => {
-        const id = document.getElementById("avanceId").value;
-        const avance = document.getElementById("nuevoAvance").value;
-        const estado = document.getElementById("nuevoEstado").value;
-
-        if (!avance.trim()) {
-            alert("Por favor, ingresa una descripción del avance.");
-            return;
-        }
-
-        await fetch(`${API_URL}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ avance, estado })
-        });
-
-        document.getElementById("modalAvance").querySelector(".btn-close").click(); // Cerrar modal
-        cargarRequerimientos(); // Refrescar tabla
-    };
+        
     </script>
+    <!-- Modal para actualizar avance -->
+<div class="modal fade" id="modalAvance" tabindex="-1" aria-labelledby="modalAvanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAvanceLabel">Actualizar Avance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="avanceId">
+                <div class="mb-3">
+                    <label for="nuevoAvance" class="form-label">Descripción del Avance</label>
+                    <textarea class="form-control" id="nuevoAvance" rows="2" placeholder="Describe el progreso..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="nuevoEstado" class="form-label">Nuevo Estado</label>
+                    <select class="form-select" id="nuevoEstado">
+                        <option value="No iniciado">No iniciado</option>
+                        <option value="En ejecución">En ejecución</option>
+                        <option value="Ejecutado">Ejecutado</option>
+                        <option value="Standby">Standby</option>
+                        <option value="Cumplido">Cumplido</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarAvance()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
