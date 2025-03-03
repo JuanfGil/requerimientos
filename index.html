@@ -54,17 +54,51 @@
         .badge-prioridad-baja { background-color: #bdbdbd; }
 
         /* Colores pastel para estados */
-        .badge-estado-no-iniciado { background-color: #ffad60; }
-        .badge-estado-en-ejecucion { background-color: #ff85c0; }
-        .badge-estado-ejecutado { background-color: #8fd694; }
-        .badge-estado-standby { background-color: #91e0a9; }
-        .badge-estado-cumplido { background-color: #6fa3ef; }
+        .badge-estado-no-iniciado { background-color: #d6d6d6; color: #333; }  /* Gris */
+        .badge-estado-en-ejecucion { background-color: #f5b7c2; color: #333; } /* Rosado */
+        .badge-estado-ejecutado { background-color: #a8e6a1; color: #333; }     /* Verde */
+        .badge-estado-standby { background-color: #f8c471; color: #333; }       /* Naranja */
+        .badge-estado-cumplido { background-color: #a6c8ff; color: #333; }      /* Azul */
     </style>
 </head>
 <body>
 
     <div class="container mt-4">
         <h1 class="text-center text-primary mb-4"><i class="bi bi-clipboard-check"></i> Gestión de Requerimientos</h1>
+
+        <!-- Modal para actualizar avance -->
+<div class="modal fade" id="modalAvance" tabindex="-1" aria-labelledby="modalAvanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAvanceLabel">Actualizar Avance</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="avanceId">
+                <div class="mb-3">
+                    <label for="nuevoAvance" class="form-label">Descripción del Avance</label>
+                    <textarea class="form-control" id="nuevoAvance" rows="2" placeholder="Describe el progreso..."></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="nuevoEstado" class="form-label">Nuevo Estado</label>
+                    <select class="form-select" id="nuevoEstado">
+                        <option value="No iniciado">No iniciado</option>
+                        <option value="En ejecución">En ejecución</option>
+                        <option value="Ejecutado">Ejecutado</option>
+                        <option value="Standby">Standby</option>
+                        <option value="Cumplido">Cumplido</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="guardarAvance()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
         <!-- Formulario -->
         <div class="card p-4 shadow">
@@ -174,8 +208,12 @@
                     <td>${req.observaciones || "-"}</td>
                     <td>${req.avance || "-"}</td>
                     <td>
-                        <button class="btn btn-info btn-sm" onclick="actualizarAvance(${req.id})">Avance</button>
-                        <button class="btn btn-danger btn-sm" onclick="eliminarRequerimiento(${req.id})">Eliminar</button>
+                        <button class="btn btn-info btn-sm" onclick="actualizarAvance(${req.id})">
+                        <i class="bi bi-pencil-square"></i> Avance
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="eliminarRequerimiento(${req.id})">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
                     </td>
                 `;
                 tabla.appendChild(fila);
@@ -240,6 +278,35 @@
 
         // Cargar la tabla al iniciar
         cargarRequerimientos();
+
+        // Función para abrir el modal de avance con datos del requerimiento
+    const actualizarAvance = (id) => {
+        document.getElementById("avanceId").value = id; // Guardar ID del requerimiento
+        document.getElementById("nuevoAvance").value = ""; // Limpiar campo
+        document.getElementById("nuevoEstado").value = "No iniciado"; // Restablecer selección
+        new bootstrap.Modal(document.getElementById("modalAvance")).show();
+    };
+
+    // Función para guardar el avance y actualizar el estado
+    const guardarAvance = async () => {
+        const id = document.getElementById("avanceId").value;
+        const avance = document.getElementById("nuevoAvance").value;
+        const estado = document.getElementById("nuevoEstado").value;
+
+        if (!avance.trim()) {
+            alert("Por favor, ingresa una descripción del avance.");
+            return;
+        }
+
+        await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avance, estado })
+        });
+
+        document.getElementById("modalAvance").querySelector(".btn-close").click(); // Cerrar modal
+        cargarRequerimientos(); // Refrescar tabla
+    };
     </script>
 </body>
 </html>
