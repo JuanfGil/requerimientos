@@ -144,7 +144,10 @@
         </div>
     </div>
 
-        <button id="descargarExcel" class="btn btn-success mt-3">Descargar Excel</button>
+        <button id="descargarExcel" class="btn btn-success mt-3">
+            <i class="bi bi-file-earmark-excel"></i> Descargar Excel
+        </button>
+
     </div>
 
     <!-- Bootstrap JS -->
@@ -260,6 +263,22 @@
             cargarRequerimientos();
         };
 
+        // Función para descargar la tabla como Excel
+        const descargarExcel = () => {
+        const tabla = document.getElementById("tablaRequerimientos");
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.table_to_sheet(tabla);
+
+        // Agregar la hoja de datos al libro de Excel
+        XLSX.utils.book_append_sheet(wb, ws, "Gestion Pendientes");
+
+        // Generar y descargar el archivo
+        XLSX.writeFile(wb, "Gestion Pendientes Caro Gil.xlsx");
+    };
+
+    // Evento para descargar Excel
+    document.getElementById("descargarExcel").addEventListener("click", descargarExcel);
+
         // Cargar la tabla al iniciar
         cargarRequerimientos();
         
@@ -296,6 +315,8 @@
         </div>
     </div>
 </div>
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 </body>
 </html>
